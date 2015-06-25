@@ -70,6 +70,41 @@ def pair_sum3(arr,k):
 
     return retlist
 
+def pair_sum4(arr, k):
+    '''
+    we will use an extra data structure to store the diffrence (k-element) and
+    later search to see if that element exists in the arr.
+    Time Complexity: O(n)
+    Space Complexity:O(n)
+    '''
+    if len(arr) < 2:
+        return
+    tallydict = {}
+
+    for i in arr:
+        tallydict[k - i] =  i
+
+    for val in arr:
+        if k - val in tallydict:
+            return val, tallydict[k-val]
+
+def pair_sum5(arr, k):
+    '''
+    will use two sets one for the nums already seen, and one for output
+    '''
+
+    if len(arr)<2:
+        return
+    seen=set()
+    output=set()
+    for num in arr:
+        target=k-num
+        if target not in seen:
+            seen.add(num)
+        else:
+            output.add( (min(num, target), max(num, target)) )
+    return '\n'.join( map(str, list(output)) )
+
 
 #print pair_sum1(arr,6)
 #test with 1
@@ -85,8 +120,16 @@ print "algo2:",t2.timeit()
 t3 = timeit.Timer("pair_sum3([2,3,9,23,-3,-5,34,3,22,10],6)", "from __main__ import pair_sum3")
 print "algo3: ", t3.timeit()
 
+t4 = timeit.Timer("pair_sum4([2,3,9,23,-3,-5,34,3,22,10],6)", "from __main__ import pair_sum4")
+print "algo4: ", t4.timeit()
+
+t5 = timeit.Timer("pair_sum5([2,3,9,23,-3,-5,34,3,22,10],6)", "from __main__ import pair_sum5")
+print "algo5: ", t5.timeit()
+
 #results:
 #algo1:  11.2225921154
 #algo2: 4.0871899128
 #algo3:  2.69490194321
-# algo 3 is the fastest 
+#algo4:  1.66329407692
+#algo5:  5.91015601158
+# algo 3 is the fastest
